@@ -251,3 +251,170 @@ SELECT
     ) confirmed_cases
 FROM 
     final_table;
+
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+-- Creating 'Total confirmed cases' month wise
+Create table confirmed_cases_monthly as SELECT 
+Country, ("1/22/20" +"1/23/20" +"1/24/20" +"1/25/20" +"1/26/20" +"1/27/20" +"1/28/20" +"1/29/20" +"1/30/20" +"1/31/20") 
+as confirmed_cases_Jan2020, ("2/1/20" +"2/2/20" +"2/3/20" +"2/4/20" +"2/5/20" +"2/6/20" +"2/7/20" +"2/8/20" +"2/9/20" +"2/10/20" +"2/11/20" +
+"2/12/20" +"2/13/20" +"2/14/20" +"2/15/20" +"2/16/20" +"2/17/20" +"2/18/20" +"2/19/20" +"2/20/20" +"2/21/20" +
+"2/22/20" +"2/23/20" +"2/24/20" +"2/25/20" +"2/26/20" +"2/27/20" +"2/28/20" +"2/29/20") as confirmed_cases_Feb2020,
+("3/1/20" +"3/2/20" +"3/4/20" +"3/5/20" +"3/6/20" +"3/7/20" +"3/8/20" +"3/9/20" +"3/10/20" +"3/11/20" +"3/12/20" +"3/13/20" +
+"3/14/20" +"3/15/20" +"3/16/20" +"3/17/20" +"3/18/20" +"3/19/20" +"3/20/20" +"3/21/20" +"3/22/20" +"3/23/20" +
+"3/24/20" +"3/25/20" +"3/26/20" +"3/27/20" +"3/28/20" +"3/29/20" +"3/3/20" +"3/30/20" +"3/31/20") 
+as confirmed_cases_Mar2020,("4/1/20" + "4/2/20" +"4/3/20" +"4/4/20" +"4/5/20" +"4/6/20" +"4/7/20" +"4/8/20" +"4/9/20" +"4/10/20" +"4/11/20" +"4/12/20" +
+"4/13/20" +"4/14/20" +"4/15/20" +"4/16/20" +"4/17/20" +"4/18/20" +"4/19/20" +"4/20/20" +"4/21/20" +"4/22/20")
+as confirmed_cases_Apr2020 FROM confirmed_cases;
+
+select * from confirmed_cases_monthly;
+
+-- Increased cases from jan'20 to feb'20
+select country, confirmed_cases_jan2020,confirmed_cases_feb2020,
+((confirmed_cases_feb2020-confirmed_cases_jan2020/confirmed_cases_jan2020)*100) as increased_confirmed_cases,
+case
+when (((confirmed_cases_feb2020-confirmed_cases_jan2020/confirmed_cases_jan2020)*100))>0 
+then 'Increment'
+when (((confirmed_cases_feb2020-confirmed_cases_jan2020/confirmed_cases_jan2020)*100))<0 
+then 'Decrement'
+else '-' 
+end 
+as confirmed_cases_Jan_to_Feb from confirmed_cases_monthly
+where confirmed_cases_jan2020!=0 and confirmed_cases_feb2020!=0; 
+
+-- Increased cases from feb'20 to mar'20
+select country, confirmed_cases_feb2020,confirmed_cases_mar2020,
+(confirmed_cases_mar2020-confirmed_cases_apr2020/confirmed_cases_apr2020) as increased_confirmed_cases,
+case
+when ((confirmed_cases_mar2020-confirmed_cases_apr2020/confirmed_cases_apr2020))>0 
+then 'Increment'
+when ((confirmed_cases_mar2020-confirmed_cases_apr2020/confirmed_cases_apr2020))<0 
+then 'Decrement'
+else '-'
+end 
+as confirmed_cases_Feb_to_Mar
+from confirmed_cases_monthly
+where confirmed_cases_feb2020!=0 and confirmed_cases_mar2020!=0; 
+
+-- Increased cases from Mar'20 to Apr'20
+select country, confirmed_cases_mar2020,confirmed_cases_apr2020,
+(confirmed_cases_apr2020-confirmed_cases_mar2020/confirmed_cases_mar2020) as increased_confirmed_cases,
+case
+when ((confirmed_cases_apr2020-confirmed_cases_mar2020/confirmed_cases_mar2020))>0 
+then 'Increment'
+when ((confirmed_cases_apr2020-confirmed_cases_mar2020/confirmed_cases_mar2020))<0 
+then 'Decrement'
+else '-'
+end 
+as confirmed_cases_Apr_to_Mar
+from confirmed_cases_monthly
+where confirmed_cases_mar2020!=0; 
+
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+-- Creating 'Total recovered cases' month wise
+Create table recovered_cases_monthly as SELECT 
+Country, ("1/22/20" +"1/23/20" +"1/24/20" +"1/25/20" +"1/26/20" +"1/27/20" +"1/28/20" +"1/29/20" +"1/30/20" +"1/31/20") 
+as recovered_cases_Jan2020, ("2/1/20" +"2/2/20" +"2/3/20" +"2/4/20" +"2/5/20" +"2/6/20" +"2/7/20" +"2/8/20" +"2/9/20" +"2/10/20" +"2/11/20" +
+"2/12/20" +"2/13/20" +"2/14/20" +"2/15/20" +"2/16/20" +"2/17/20" +"2/18/20" +"2/19/20" +"2/20/20" +"2/21/20" +
+"2/22/20" +"2/23/20" +"2/24/20" +"2/25/20" +"2/26/20" +"2/27/20" +"2/28/20" +"2/29/20") as recovered_cases_Feb2020,
+("3/1/20" +"3/2/20" +"3/4/20" +"3/5/20" +"3/6/20" +"3/7/20" +"3/8/20" +"3/9/20" +"3/10/20" +"3/11/20" +"3/12/20" +"3/13/20" +
+"3/14/20" +"3/15/20" +"3/16/20" +"3/17/20" +"3/18/20" +"3/19/20" +"3/20/20" +"3/21/20" +"3/22/20" +"3/23/20" +
+"3/24/20" +"3/25/20" +"3/26/20" +"3/27/20" +"3/28/20" +"3/29/20" +"3/3/20" +"3/30/20" +"3/31/20") 
+as recovered_cases_Mar2020,("4/1/20" + "4/2/20" +"4/3/20" +"4/4/20" +"4/5/20" +"4/6/20" +"4/7/20" +"4/8/20" +"4/9/20" +"4/10/20" +"4/11/20" +"4/12/20" +
+"4/13/20" +"4/14/20" +"4/15/20" +"4/16/20" +"4/17/20" +"4/18/20" +"4/19/20" +"4/20/20" +"4/21/20" +"4/22/20")
+as recovered_cases_Apr2020 FROM recovered_cases;
+
+select * from recovered_cases_monthly;
+
+-- Increased recovered cases from jan'20 to feb'20
+select country, recovered_cases_jan2020,recovered_cases_feb2020,
+(recovered_cases_feb2020-recovered_cases_jan2020/recovered_cases_jan2020) as increased_recovered_cases,
+case
+when (recovered_cases_feb2020-recovered_cases_jan2020/recovered_cases_jan2020)>0 
+then 'Increment'
+when (recovered_cases_feb2020-recovered_cases_jan2020/recovered_cases_jan2020)<0 
+then 'Decrement'
+else '-' 
+end 
+as recovered_cases_Jan_to_Feb from recovered_cases_monthly
+where recovered_cases_jan2020!=0; 
+
+-- Increased recovered cases from feb'20 to mar'20
+select country, recovered_cases_feb2020,recovered_cases_mar2020,
+(recovered_cases_mar2020-recovered_cases_feb2020/recovered_cases_feb2020) as increased_recovered_cases,
+case
+when (recovered_cases_mar2020-recovered_cases_feb2020/recovered_cases_feb2020)>0 
+then 'Increment'
+when (recovered_cases_mar2020-recovered_cases_feb2020)*100/recovered_cases_feb2020)<0 
+then 'Decrement'
+else '-' 
+end 
+as recovered_cases_Feb_to_Mar from recovered_cases_monthly
+where recovered_cases_feb2020!=0; 
+
+-- Increased cases from Mar'20 to Apr'20
+select country, recovered_cases_Mar2020,recovered_cases_Apr2020,
+(recovered_cases_apr2020-recovered_cases_mar2020/recovered_cases_mar2020) as increased_recovered_cases,
+case
+when (recovered_cases_apr2020-recovered_cases_mar2020/recovered_cases_mar2020)>0 
+then 'Increment'
+when (recovered_cases_apr2020-recovered_cases_mar2020/recovered_cases_mar2020)<0 
+then 'Decrement'
+else '-' 
+end 
+as recovered_cases_Mar_to_Apr from recovered_cases_monthly
+where recovered_cases_mar2020!=0;
+
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+-- Creating 'Total death cases' month wise
+Create table deaths_monthly as SELECT 
+Country, ("1/22/20" +"1/23/20" +"1/24/20" +"1/25/20" +"1/26/20" +"1/27/20" +"1/28/20" +"1/29/20" +"1/30/20" +"1/31/20") 
+as deaths_Jan2020, ("2/1/20" +"2/2/20" +"2/3/20" +"2/4/20" +"2/5/20" +"2/6/20" +"2/7/20" +"2/8/20" +"2/9/20" +"2/10/20" +"2/11/20" +
+"2/12/20" +"2/13/20" +"2/14/20" +"2/15/20" +"2/16/20" +"2/17/20" +"2/18/20" +"2/19/20" +"2/20/20" +"2/21/20" +
+"2/22/20" +"2/23/20" +"2/24/20" +"2/25/20" +"2/26/20" +"2/27/20" +"2/28/20" +"2/29/20") as deaths_Feb2020,
+("3/1/20" +"3/2/20" +"3/4/20" +"3/5/20" +"3/6/20" +"3/7/20" +"3/8/20" +"3/9/20" +"3/10/20" +"3/11/20" +"3/12/20" +"3/13/20" +
+"3/14/20" +"3/15/20" +"3/16/20" +"3/17/20" +"3/18/20" +"3/19/20" +"3/20/20" +"3/21/20" +"3/22/20" +"3/23/20" +
+"3/24/20" +"3/25/20" +"3/26/20" +"3/27/20" +"3/28/20" +"3/29/20" +"3/3/20" +"3/30/20" +"3/31/20") 
+as deaths_Mar2020,("4/1/20" + "4/2/20" +"4/3/20" +"4/4/20" +"4/5/20" +"4/6/20" +"4/7/20" +"4/8/20" +"4/9/20" +"4/10/20" +"4/11/20" +"4/12/20" +
+"4/13/20" +"4/14/20" +"4/15/20" +"4/16/20" +"4/17/20" +"4/18/20" +"4/19/20" +"4/20/20" +"4/21/20" +"4/22/20")
+as deaths_Apr2020 FROM deaths;
+
+select * from deaths_monthly;
+
+-- Increased cases from jan'20 to feb'20
+select country, deaths_jan2020,deaths_feb2020,
+(deaths_feb2020-deaths_jan2020/deaths_jan2020) as increased_death_cases,
+case
+when (deaths_feb2020-deaths_jan2020/deaths_jan2020)>0 
+then 'Increment'
+when (deaths_feb2020-deaths_jan2020/deaths_jan2020)<0 
+then 'Decrement'
+else '-' 
+end 
+as deaths_Jan_to_Feb from deaths_monthly
+where deaths_jan2020!=0 and deaths_feb2020!=0; 
+
+-- Increased cases from feb'20 to mar'20
+select country, deaths_feb2020,deaths_mar2020,
+(deaths_mar2020-deaths_feb2020/deaths_feb2020) as increased_death_cases,
+case
+when (deaths_mar2020-deaths_feb2020/deaths_feb2020)>0 
+then 'Increment'
+when (deaths_mar2020-deaths_feb2020/deaths_feb2020)<0 
+then 'Decrement'
+else '-' 
+end 
+as deaths_Feb_to_Mar from deaths_monthly
+where deaths_feb2020!=0; 
+
+-- Increased cases from Mar'20 to Apr'20
+select country, deaths_Mar2020,deaths_apr2020,
+(deaths_apr2020-deaths_mar2020/deaths_mar2020) as increased_death_cases,
+case
+when (deaths_apr2020-deaths_mar2020/deaths_mar2020)>0 
+then 'Increment'
+when (deaths_apr2020-deaths_mar2020/deaths_mar2020)<0 
+then 'Decrement'
+else '-' 
+end 
+as deaths_Mar_to_Apr from deaths_monthly
+where deaths_mar2020!=0; 
